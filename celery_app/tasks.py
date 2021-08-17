@@ -2,13 +2,15 @@ from time import sleep
 from kombu import Queue, Exchange
 from celery import Celery
 
-app = Celery('celery_app', include=['celery_app.tasks'])
+app = Celery('tasks')
 celery_config = app.config_from_object('celeryconfig')
-celery_queues = (Queue('orders', Exchange('celery_app', type='direct'), routing_key='order'))
+celery_queues = (Queue('orders', Exchange('orders', type='direct'), routing_key='order'))
+app.autodiscover_tasks()
 
 
-@app.task(exchange='celery', queue='orders')
+@app.task(exchange='orders', queue='orders')
 def make_coffee(order_number, coffee_type):
+    print(f"Получен заказ №{order_number}, тип - {coffee_type}")
     if coffee_type == "cappuccino":
         work_time = 20
     elif coffee_type == "americano":

@@ -14,7 +14,7 @@ def callback(ch, method, properties, body):
     #print(" [x] Received %r" % body.decode())
     #sleep(body.count(b'.'))
     #print(" [x] Done")
-    print(type(body))
+    print(body)
 
 
 channel.basic_qos(prefetch_count=1)

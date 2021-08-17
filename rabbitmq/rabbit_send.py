@@ -13,5 +13,3 @@ def rabbit_send(order_number: int, coffee_type: str):
     print(" [x] Sent %r" % message)
     connection.close()
 
-
-rabbit_send(1, "cappuccino")
