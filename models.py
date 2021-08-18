@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, Text
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, Text, Sequence
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from database import Base
@@ -16,9 +16,9 @@ class User(Base):  # Таблица со списком пользователе
 
 class Orders(Base):  # Таблица заказов
     __tablename__ = "orders"
-    owner_id = Column(UUID(as_uuid=True), ForeignKey("clients.id"), default=uuid.uuid4, primary_key=True)
+    owner_id = Column(UUID(as_uuid=True), ForeignKey("clients.id"), default=uuid.uuid4)
     coffee_type = Column(String)
-    order_number = Column(Integer)
+    order_number = Column(Integer, Sequence("orders_order_number_seq", start=1, increment=1), primary_key=True)
     ready = Column(Boolean)
     wait = Column(Boolean)
     in_progress = Column(Boolean)
