@@ -1,5 +1,4 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import text
 import models
 import schemas
 from uuid import uuid4, UUID
@@ -31,13 +30,7 @@ def get_items(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_user_item(db: Session, item: schemas.OrderCreate, user_id: UUID):
-    order_number = db.query(text('count(*) from orders')).first()
-    if order_number is None:
-        order_number = 1
-    else:
-        order_number = order_number[0]
-        order_number += 1
-    db_item = models.Orders(**item.dict(), owner_id=user_id, order_number=order_number)
+    db_item = models.Orders(**item.dict(), owner_id=user_id)
     db.add(db_item)
     db.commit()
     db.refresh(db_item)
