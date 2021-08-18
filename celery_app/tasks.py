@@ -3,7 +3,7 @@ from kombu import Queue, Exchange
 from celery import Celery
 
 app = Celery('tasks')
-celery_config = app.config_from_object('celeryconfig')
+celery_config = app.config_from_object('celery_app/celeryconfig')
 celery_queues = (Queue('orders', Exchange('orders', type='direct'), routing_key='order'))
 app.autodiscover_tasks()
 
