@@ -1,8 +1,5 @@
-import sqlalchemy
-import psycopg2
-
 broker_url = 'amqp://guest:guest@localhost:5672'
-# backend_url = 'db+postgresql+psycopg2://postgres:Q1w2e3r4t5@127.0.0.1/test_db'
+#backend_url = 'db+postgresql+psycopg2://postgres:Q1w2e3r4t5@127.0.0.1/test_db'
 result_backend = 'db+postgresql+psycopg2://postgres:Q1w2e3r4t5@127.0.0.1/test_db'
 backend_url = 'amqp://guest:guest@localhost:5672'
 
