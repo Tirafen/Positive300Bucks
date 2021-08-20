@@ -19,3 +19,10 @@ task_queues = {"orders":
 task_default_exchange = "orders"
 task_default_exchange_type = "direct"
 task_default_routing_key = "order"
+
+beat_schedule = {
+    'check_orders': {
+        'task': 'tasks.check_orders',
+        'schedule': 10,
+    },
+}
