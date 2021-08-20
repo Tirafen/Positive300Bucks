@@ -30,7 +30,7 @@ def get_items(db: Session, skip: int = 0, limit: int = 100):
 
 
 def create_user_item(db: Session, item: schemas.OrderCreate, user_id: UUID):
-    db_item = models.Orders(**item.dict(), owner_id=user_id)
+    db_item = models.Orders(**item.dict(), owner_id=user_id, ready=False, wait=True, in_progress=False)
     db.add(db_item)
     db.commit()
     db.refresh(db_item)
