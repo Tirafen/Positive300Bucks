@@ -29,6 +29,10 @@ def get_items(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Orders).offset(skip).limit(limit).all()
 
 
+def get_ready(db: Session, ready: bool, skip: int = 0, limit: int = 100):
+    return db.query(models.Orders).filter(models.Orders.ready == ready).offset(skip).limit(limit).all()
+
+
 def create_user_item(db: Session, item: schemas.OrderCreate, user_id: UUID):
     db_item = models.Orders(**item.dict(), owner_id=user_id, ready=False, wait=True, in_progress=False)
     db.add(db_item)

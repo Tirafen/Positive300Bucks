@@ -1,6 +1,5 @@
 broker_url = 'amqp://guest:guest@localhost:5672'
-#backend_url = 'db+postgresql+psycopg2://postgres:Q1w2e3r4t5@127.0.0.1/test_db'
-result_backend = 'db+postgresql+psycopg2://postgres:Q1w2e3r4t5@127.0.0.1/test_db'
+result_backend = 'db+postgresql://postgres:Q1w2e3r4t5@127.0.0.1/test_db'
 backend_url = 'amqp://guest:guest@localhost:5672'
 
 celery_track_started = True
@@ -20,9 +19,3 @@ task_default_exchange = "orders"
 task_default_exchange_type = "direct"
 task_default_routing_key = "order"
 
-beat_schedule = {
-    'check_orders': {
-        'task': 'tasks.check_orders',
-        'schedule': 10,
-    },
-}

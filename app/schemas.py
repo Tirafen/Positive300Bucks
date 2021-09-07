@@ -12,12 +12,9 @@ class OrderCreate(BaseModel):
 
 
 class Order(BaseModel):
-    owner_id: UUID4
+    #owner_id: UUID4
     coffee_type: str
     order_number: int
-    ready = bool
-    wait = bool
-    in_progress = bool
 
     class Config:
         orm_mode = True

@@ -57,3 +57,8 @@ async def read_orders(skip: int = 0, limit: int = 100, db: Session = Depends(get
     items = crud.get_items(db, skip=skip, limit=limit)
     return items
 
+
+@app.get("/table/", response_model=List[schemas.Order])  # Табло готовых заказов
+async def ready_orders(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    ready = crud.get_ready(db, ready=True, skip=skip, limit=limit)
+    return ready
