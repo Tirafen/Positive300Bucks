@@ -1,0 +1,42 @@
+version: "3.7"
+services:
+  backend_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend_app
+    stop_signal: SIGINT
+    env_file: .env
+    image: app/backend
+    depends_on: 
+      - postgres
+      - celery
+    ports:
+      - "8004:8000"
+    volumes:
+      - ./:/app
+
+  postgres:
+    container_name: postgres
+    image: postgres:13.3
+    restart: always
+    env_file: .env
+    environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: Q1w2e3r4t5
+        POSTGRES_DB: test_db
+    ports:
+        - "5432:5432"
+
+  rabbitmq:
+    image: rabbitmq:3.8
+    container_name: rabbitmq
+    env_file: .env
+    environment:
+        RABBITMQ_DEFAULT_USER: guest
+        RABBITMQ_DEFAULT_PASS: guest
+        RABBITMQ_DEFAULT_VHOST: /
+    ports:
+        - "5672:5672"
+        - "15672:15672"
+ 
