@@ -1,14 +1,12 @@
 FROM python:3.9-slim-buster
-EXPOSE ${BACKEND_PORT}
+RUN pip install pipenv
 
 ENV PYTHONUNBUFFERED 1
-ENV APP_HOME=/app
-
-WORKDIR ${APP_HOME}
-
-COPY app app
+RUN mkdir ./celery_app
+COPY ./celery_app /celery_app
+WORKDIR ./
 COPY requirements.txt ./
-
+EXPOSE 8000
 RUN pip install --no-cache-dir -U pip
-RUN pip install -v --no-cache-dir -U  -r requirements.txt --src /app
+RUN pip install -v --no-cache-dir -U  -r requirements.txt --src ./
 
