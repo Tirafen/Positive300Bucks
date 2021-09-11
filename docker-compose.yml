@@ -1,22 +1,27 @@
 version: "3.7"
 services:
   fastapi:
-    image: tiangolo/uvicorn-gunicorn-fastapi:latest
-    command: uvicorn main:app --host 0.0.0.0:8000
+    build: .
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
     ports:
-      - 8000:8000
+      - "8008:8000"
+    expose:
+      - "8000"
+      - "8008"
+    depends_on:
+      - db
   db:
     image: postgres:latest
     volumes:
       - ./data/db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    expose:
+      - "5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=Q1w2e3r4t5
       - POSTGRES_DB=test_db
-    depends_on:
-      - fastapi
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
@@ -25,6 +30,8 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=Q1w2e3r4t5
     ports:
       - "5050:80"
+    expose:
+      - "80"
     depends_on:
       - db
   rabbitmq:
@@ -37,16 +44,38 @@ services:
     ports:
         - "5672:5672"
         - "15672:15672"
+    expose:
+      - "15672"
+      - "5672"
   celery:
-    build: ./celery_app
+    build: .
     command: celery -A celery_app.tasks worker -l INFO --concurrency=2
     volumes:
-      - .:/usr/src/celery_app
+      - ./app:/celery_app
     links:
       - rabbitmq
       - db
     depends_on:
-      - fastapi
       - rabbitmq
       - db
- 
+  celery-beat:
+    build: .
+    command: celery -A celery_app.tasks beat
+    volumes:
+      - ./app:/celery_app
+    links:
+      - rabbitmq
+      - db
+    depends_on:
+      - rabbitmq
+      - db
+  flower:
+    build: .
+    command: celery -A celery_app.tasks flower
+    volumes:
+      - ./app:/celery_app
+    ports:
+      - "5555:5555"
+    depends_on:
+      - celery
+      - rabbitmq
