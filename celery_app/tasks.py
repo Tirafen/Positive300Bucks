@@ -1,8 +1,8 @@
 from time import sleep
 from celery import Celery
-from database import SessionLocal
+from celery_app.database import SessionLocal
 from sqlalchemy import text
-import celeryconfig
+from celery_app import celeryconfig
 
 db = SessionLocal()
 
